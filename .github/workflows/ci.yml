@@ -38,7 +38,7 @@ jobs:
       # 构建并推送镜像
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=yourname/go-ci-demo
+          IMAGE_NAME=lawwaikit/go-ci-demo
           GIT_SHA=${{ github.sha }}
           docker build -t $IMAGE_NAME:$GIT_SHA .
           docker push $IMAGE_NAME:$GIT_SHA
