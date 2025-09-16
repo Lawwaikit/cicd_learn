@@ -67,5 +67,5 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/go-ci-demo:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/go-ci-demo:${{ env.VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/go-ci-demo:latest
+            ${{ secrets.DOCKER_USERNAME }}/go-ci-demo:${{ env.VERSION }}
