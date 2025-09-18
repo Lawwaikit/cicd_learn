@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. 拉取代码
+      # 1. 拉取代码
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       # 2. 设置 Go 环境
       - name: Set up Go
@@ -33,18 +33,26 @@ jobs:
       - name: Build binary
         run: go build -o go-ci-demo .
 
-      # 6. 登录 Docker Hub
+
+  docker-build-push:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # 2. 登录到Docker Hub
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 7. 设置 buildx（支持多平台构建）
+      # 3. 设置 buildx（支持多平台构建）
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
-      # 生成镜像版本号
+      # 4. 生成镜像版本号
       - name: Generate version
         id: version
         run: |
@@ -61,7 +69,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      # 构建并推送镜像
+      # 4. 构建并推送镜像
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
